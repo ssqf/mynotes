@@ -9,6 +9,23 @@
 
 :heart: **不忘初心，方得始终**
 
+作用：将回车换为两个空格加回车
+作者：吴思澎
+链接：https://www.zhihu.com/question/22524345/answer/102385371
+来源：知乎
+著作权归作者所有，转载请联系作者获得授权。
+```js
+text=text.replace(/\n+/g,function(ns){
+    if(ns.length==1)
+        return '  '+ns
+    
+    return ns
+});
+
+text=Markdown.toHtml(text);
+```
+
+
 ## markdown测试
 
 ### 一、各种流程图
