@@ -19,3 +19,6 @@
 `Ctrl+` \`   打开集成终端  `Ctrl+Ins` and `Shift+Ins` 和 `Ctrl+Shift+C` and `Ctrl+Shift+V` 在终端复制粘贴     
 `Ctrl+-` 和  `Ctrl+=` 缩小 放大      
 `Alt+F12`  临时预览函数定义
+
+## 常用设置
+1、修改vscode的markdown-it 打开extension.js 中 breaks 选型 `html: true, breaks: true,`

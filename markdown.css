@@ -384,35 +384,42 @@ blockquote>:last-child {
 }
 
 table {
-  width: 100%;
+  /*width: 100%;*/
+  min-width: 60%;
   overflow: auto;
   word-break: normal;
   word-break: keep-all;
+  border:2px solid #55a532;
+  border-collapse:collapse; 
 }
 
 table th {
   font-weight: bold;
+  border: 1px solid #ddd;
+  background-color: #001a00;
 }
 
-table th,
 table td {
   padding: 6px 13px;
   border: 1px solid #ddd;
+  border-collapse:collapse; 
 }
 
 table tr {
-  background-color: #fff;
-  border-top: 1px solid #ccc;
+  /*background-color: #555;*/
+  border: 1px solid #ddd;
+  /*border-top: 1px solid #ddd;*/
 }
 
 table tr:nth-child(2n) {
-  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  /*background-color: #333;*/
 }
 
 img {
   max-width: 100%;
   box-sizing: content-box;
-  background-color: #fff;
+  /*background-color: #fff;*/
 }
 
 code {
