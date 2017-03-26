@@ -22,3 +22,4 @@
 
 ## 常用设置
 1、修改vscode的markdown-it 打开extension.js 中 breaks 选型 `html: true, breaks: true,`
+    C:\Program Files (x86)\Microsoft VS Code\resources\app\extensions\markdown\out\markdownEngine.js  
