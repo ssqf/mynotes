@@ -1,0 +1,38 @@
+# golang工程管理工具
+
+## go命令
+1. go常用子命令
+```
+	build            compile packages and dependencies
+	clean            remove object files
+	doc              show documentation for package or symbol
+	env              print Go environment information
+	fmt              run gofmt on package sources
+	get              download and install packages and dependencies
+	install          compile and install packages and dependencies
+	list             list packages
+	run              compile and run Go program
+	test             test packages
+	version          print Go version
+	vet              run go tool vet on packages
+
+Use "go help [command]" for more information about a command.
+```
+
+## gofmt命令
+1. 使用`gofmt [flags] [path ...]`path可以是文件和目录，目录则处理所有go源文件
+    - `-d`比较原始和新调整后的差异，需要有diff工具可用 
+    - `-e`打印所有错误
+    - `-l`不输出重新格式化的源码，输出格式化后不同的文件名
+    - `-w`不输出重新格式化的源码,并覆盖原文件
+    - `-r`按规则替换
+    - `-s`尝试简化代码
+
+## godoc命令
+1. 启动本地文档服务`godoc -http=:6060`
+2. 提取代码文档`godoc package [name ...]`
+
+## vscode golang插件
+- 代码自动格式化，可以选择gofmt和goreturns
+- 自动添加移除包依赖
+- 代码调试
