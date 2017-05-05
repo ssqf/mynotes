@@ -3,7 +3,9 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"net"
 )
 
 // Users 用户数据
@@ -14,6 +16,7 @@ type Users struct {
 	Sex     string
 	Age     int
 	State   int
+	Email   string
 	Friends map[int]interface{}
 }
 
@@ -74,6 +77,39 @@ func CreateUserID(curID int) int {
 	}()
 }
 
+func InitServer() net.Listener {
+	listen, err := net.Listen("tcp", ":7908")
+	if err != nil {
+		panic("监听\":7908\"失败")
+	}
+	fmt.Println("监听\":7908\"成功")
+	return listen
+}
+
+func handleConn(l net.Listener) (id int, conn net.Conn) {
+	for {
+		conn, err := l.Accept()
+		if err != nil {
+			fmt.Println("连接失败:", err.Error())
+			continue
+		}
+
+	}
+
+}
+
+func handleUserConn(conn net.Conn) {
+	defer conn.Close()
+	buff := make([]byte, 512)
+	conn.Write(bytes.NewBufferString("你好，请登录或注册").Bytes())
+	for {
+		n, err := conn.Read(buff)
+        if err != nil{
+            fmt.Println("读取数据失败:", err.Error())
+			continue
+        }
+	}
+}
 func main() {
 
 }
