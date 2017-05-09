@@ -3,7 +3,7 @@
 package main
 
 import (
-	"bytes"
+	"encoding/json"
 	"fmt"
 	"net"
 )
@@ -21,27 +21,10 @@ type Users struct {
 }
 
 // UserList 存储用户列表
-type UserList struct {
-	User     Users
-	NextUser *UserList
-}
+var UserList = make(map[int]Users, 500)
 
-// Ulist 全局的用户列表
-var Ulist *UserList
-
-// InitUserList 初始化用户列表
-func InitUserList() *UserList {
-	//从文件中读取用户列表
-}
-
-// ShowUserList 显示所有用户
-func (ul *UserList) ShowUserList() {
-	for ul != nil {
-		fmt.Printf("id:%d\tname:%s\tSex:%s\tAge:%d\tState:%d\n", ul.User.id, ul.User.Name, ul.User.Sex, ul.User.Age, ul.User.State)
-		ul = ul.NextUser
-	}
-
-}
+// ConnList 当前用户连接列表
+var ConnList = make(map[int]Users, 500)
 
 // FindUser 通过id查找用户
 func (ul *UserList) FindUser(id int) Users {
@@ -77,6 +60,7 @@ func CreateUserID(curID int) int {
 	}()
 }
 
+// InitServer 初始化服务器
 func InitServer() net.Listener {
 	listen, err := net.Listen("tcp", ":7908")
 	if err != nil {
@@ -93,21 +77,40 @@ func handleConn(l net.Listener) (id int, conn net.Conn) {
 			fmt.Println("连接失败:", err.Error())
 			continue
 		}
-
+		go handleUserConn(conn)
 	}
 
 }
 
 func handleUserConn(conn net.Conn) {
+	userid := 0
 	defer conn.Close()
 	buff := make([]byte, 512)
-	conn.Write(bytes.NewBufferString("你好，请登录或注册").Bytes())
+	conn.Write([]byte("你好，请登录或注册"))
 	for {
 		n, err := conn.Read(buff)
-        if err != nil{
-            fmt.Println("读取数据失败:", err.Error())
+		if err != nil {
+			fmt.Println("读取数据失败:", err.Error())
 			continue
-        }
+		}
+		//解析收到的json数据
+		var dat map[string]interface{}
+		err = json.Unmarshal(buff[:n], &dat)
+		if err != nil {
+			fmt.Println("json数据解析失败:", err.Error())
+			continue
+		}
+		switch dat["action"] {
+		case "adduser":
+		case "login":
+		case "logout":
+		case "send":
+		case "find":
+		case "list":
+		default:
+
+		}
+
 	}
 }
 func main() {
