@@ -35,11 +35,14 @@ func main() {
 	go sendData(conn)
 	for {
 		fmt.Println("等待读取数据")
-		data, err := bufio.NewReader(conn).ReadBytes('\n')
+		data := make([]byte, 1024)
+		//data, err := bufio.NewReader(conn).ReadBytes('\n')
+		//data, err := bufio.NewReader(conn).ReadBytes('\n')
+		n, err := conn.Read(data)
 		if err != nil {
 			conn.Close()
 			log.Fatalln("读取数据失败", err.Error())
 		}
-		fmt.Println("读到的数据:", data)
+		fmt.Printf("读到的数据:%v %s\n", data[:n], string(data[:n]))
 	}
 }
