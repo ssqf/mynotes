@@ -6,6 +6,17 @@ import (
 	"time"
 )
 
+func compareSlice(s1 []byte, s2 []byte) bool {
+	if len(s1) != len(s1) {
+		return false
+	}
+	for i, v := range s1 {
+		if v != s2[i] {
+			return false
+		}
+	}
+	return true
+}
 func connServ(addr string) {
 	conn, err := net.Dial("tcp", "localhost:"+addr)
 	if err != nil {
@@ -23,7 +34,16 @@ func connServ(addr string) {
 			continue
 		}
 		fmt.Printf("收到：%v \n", buff[:n])
-		conn.Write([]byte{69, 3, 4, 187, 245, 0, 9, 10, 231})
+		switch {
+		case compareSlice(buff[:n], []byte{1, 3, 0, 16, 0, 1, 133, 207}):
+			conn.Write([]byte{177, 3, 2, 9, 96, 255, 230}) //24
+		case compareSlice(buff[:n], []byte{1, 3, 0, 17, 0, 1, 212, 15}):
+			conn.Write([]byte{83, 3, 2, 3, 32, 0, 160}) //800
+		case compareSlice(buff[:n], []byte{1, 3, 0, 0, 0, 2, 196, 11}):
+			conn.Write([]byte{69, 3, 4, 187, 245, 0, 9, 10, 231}) //6379.41
+		case compareSlice(buff[:n], []byte{1, 3, 0, 8, 0, 2, 69, 201}):
+			conn.Write([]byte{138, 3, 4, 187, 9, 0, 0, 53, 221}) //47.881
+		}
 	}
 }
 

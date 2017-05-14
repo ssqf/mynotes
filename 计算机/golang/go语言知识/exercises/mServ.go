@@ -36,6 +36,7 @@ func recvData(conn net.Conn) {
 		}
 		fmt.Printf("读到的数据:%v %s\n", data[:n], string(data[:n]))
 	}
+
 }
 func main() {
 	defer func() {
