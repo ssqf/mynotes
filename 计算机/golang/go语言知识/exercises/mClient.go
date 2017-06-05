@@ -48,7 +48,7 @@ func connServ(addr string) {
 }
 
 func main() {
-	port := []string{"51001", "61001", "61002"}
+	port := []string{"10101"}
 	for _, v := range port {
 		go connServ(v)
 	}

@@ -6,6 +6,8 @@ import (
 	"log"
 	"net"
 	"os"
+	"strconv"
+	"strings"
 )
 
 func sendData(conn net.Conn) {
@@ -15,12 +17,18 @@ func sendData(conn net.Conn) {
 		if err != nil {
 			log.Fatalln("标准输入读取数据失败", err.Error())
 		}
-		line = append(line, 10)
-		conn.Write(line)
+		s := strings.Fields(string(line))
+		fmt.Printf("%v\n", s)
+		d := make([]byte, len(s))
+		for i, v := range s {
+			t, _ := strconv.ParseUint(v, 16, 8)
+			d[i] = byte(t)
+		}
+		//line = append(line)
+		conn.Write(d)
 		//conn.Write([]byte("\n"))
-		fmt.Println("发送数据：", line)
+		fmt.Printf("发送数据：%X\n", d)
 	}
-
 }
 func recvData(conn net.Conn) {
 	for {
@@ -41,21 +49,25 @@ func recvData(conn net.Conn) {
 func main() {
 	defer func() {
 		if r := recover(); r != nil {
-			log.Println("[E]", r)
+			log.Println("[Error:]", r)
 		}
 	}()
-	fmt.Println("Service Start!!!")
-	l, err := net.Listen("tcp", ":7010")
+	fmt.Println("Service Start!!! 输入监听端口")
+	listenPort := ""
+	fmt.Scanf("%s", &listenPort)
+	log.Println("开始监听：", listenPort)
+	l, err := net.Listen("tcp", "0.0.0.0:"+listenPort)
 	if err != nil {
-		log.Fatalln("监听7010失败", err.Error())
+		log.Fatalln("监听失败", err.Error())
+	}
+	conn, err := l.Accept() //接受连接
+	if err != nil {
+		log.Fatalln("建立连接失败", err.Error())
+	}
+	log.Printf("连接建立成功\n")
+	go sendData(conn)
+	go recvData(conn)
+	for {
 	}
 
-	for {
-		conn, err := l.Accept()
-		if err != nil {
-			log.Fatalln("建立连接失败", err.Error())
-		}
-		go sendData(conn)
-		go recvData(conn)
-	}
 }
