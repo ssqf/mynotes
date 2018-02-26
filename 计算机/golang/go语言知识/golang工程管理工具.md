@@ -36,3 +36,19 @@ Use "go help [command]" for more information about a command.
 - 代码自动格式化，可以选择gofmt和goreturns
 - 自动添加移除包依赖
 - 代码调试
+
+## 交叉编译
+设置相关环节变量即可
+GOOS：目标可执行程序运行操作系统，支持 darwin，freebsd，linux，windows  
+GOARCH：目标可执行程序操作系统构架，包括 386，amd64，arm  
+Golang version 1.5以前版本在首次交叉编译时还需要配置交叉编译环境：  
+CGO_ENABLED=0 GOOS=linux GOARCH=amd64 ./make.bash  
+CGO_ENABLED=0 GOOS=windows GOARCH=amd64 ./make.bash  
+
+### powershell 设置变量
+1. linxu 64位系统程序
+    $env:GOOS="linux"
+	$env:GOARCH="amd64"
+2. windows 64位程序
+	$env:GOOS="windows"  
+	$env:GOARCH="amd64"  
