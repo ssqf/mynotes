@@ -10,16 +10,16 @@ import (
 )
 
 func main() {
-	conn, err := net.Dial("tcp", "127.0.0.1:10000")
+	conn, err := net.Dial("tcp", "127.0.0.1:12345")
 	if err != nil {
-		log.Fatalf(" dial tcp 127.0.0.1:10000 error:%v ", err)
+		log.Fatalf(" dial tcp 127.0.0.1:12345 error:%v ", err)
 	}
 	writer := bufio.NewWriter(conn)
 	for {
 		rand.Seed(time.Now().UnixNano())
 		num := byte(rand.Int() % 10)
 		for i := 0; i < int(num); i++ {
-			slat := byte(rand.Uint32() % 0xFF)
+			slat := byte(rand.Uint32()%0xF0) + byte(3)
 			writer.WriteByte(slat)
 			time.Sleep(time.Duration(rand.Int63()%100) * time.Millisecond)
 		}
@@ -31,13 +31,12 @@ func main() {
 		rand.Seed(time.Now().UnixNano())
 		num = byte(rand.Int() % 10)
 		for i := 0; i < int(num); i++ {
-			slat := byte(rand.Uint32() % 0xFF)
+			slat := byte(rand.Uint32()%0xF0) + byte(3)
 			writer.WriteByte(slat)
 			time.Sleep(time.Duration(rand.Int63()%100) * time.Millisecond)
 		}
-
-		time.Sleep(time.Duration(rand.Int63()%100) * time.Millisecond)
 		writer.Flush()
+		time.Sleep(time.Duration(rand.Int63()%5) * time.Second)
 	}
 }
 
@@ -63,8 +62,8 @@ func createData() [12]byte {
 	for i := 0; i < 7; i++ {
 		data[1+i] = numByte[i]
 	}
-	data[9] = pos
-	x := xorVerify(data[1:10])
+	data[8] = pos
+	x := xorVerify(data[1:9])
 	data[9] = x >> 4
 	data[10] = x & 0xF
 	return data
